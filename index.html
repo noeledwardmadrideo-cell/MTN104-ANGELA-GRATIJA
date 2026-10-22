@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculus Hub: Rules & Applications of Derivatives</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for interactive visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .math-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6;
+        }
+        .dark .math-box {
+            background-color: #1e293b;
+            border-left: 4px solid #60a5fa;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+
+    <!-- Header Navigation -->
+    <header class="bg-white dark:bg-slate-800 shadow-sm border-b border-slate-200 dark:border-slate-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-blue-600 text-white p-2 rounded-lg">
+                        <i class="fa-solid fa-square-root-variable text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">CalculusHub</h1>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Applications & Rules of Derivatives</p>
+                    </div>
+                </div>
+                
+                <!-- Quick Navigation -->
+                <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                    <button onclick="switchTab('maxima-minima')" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition">Maxima & Minima</button>
+                    <button onclick="switchTab('derivative-rules')" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition">Rules of Derivatives</button>
+                    <button onclick="switchTab('trig-derivatives')" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition">Trigonometric Rules</button>
+                    <button onclick="switchTab('higher-implicit')" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition">Higher Order & Implicit</button>
+                    <button onclick="switchTab('practice-quiz')" class="nav-link hover:text-blue-600 dark:hover:text-blue-400 transition">Practice Quiz</button>
+                </nav>
+
+                <div class="flex items-center space-x-3">
+                    <button id="themeToggle" onclick="toggleDarkMode()" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition">
+                        <i class="fa-solid fa-moon dark:hidden"></i>
+                        <i class="fa-solid fa-sun hidden dark:inline"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation bar -->
+        <div class="md:hidden flex overflow-x-auto border-t border-slate-200 dark:border-slate-700 px-2 py-2 space-x-2 text-xs font-medium bg-slate-50 dark:bg-slate-800">
+            <button onclick="switchTab('maxima-minima')" class="px-3 py-1.5 rounded-md bg-white dark:bg-slate-700 shadow-sm border border-slate-200 dark:border-slate-600 whitespace-nowrap">Maxima & Minima</button>
+            <button onclick="switchTab('derivative-rules')" class="px-3 py-1.5 rounded-md bg-white dark:bg-slate-700 shadow-sm border border-slate-200 dark:border-slate-600 whitespace-nowrap">Derivative Rules</button>
+            <button onclick="switchTab('trig-derivatives')" class="px-3 py-1.5 rounded-md bg-white dark:bg-slate-700 shadow-sm border border-slate-200 dark:border-slate-600 whitespace-nowrap">Trig Rules</button>
+            <button onclick="switchTab('higher-implicit')" class="px-3 py-1.5 rounded-md bg-white dark:bg-slate-700 shadow-sm border border-slate-200 dark:border-slate-600 whitespace-nowrap">Higher Order & Implicit</button>
+            <button onclick="switchTab('practice-quiz')" class="px-3 py-1.5 rounded-md bg-white dark:bg-slate-700 shadow-sm border border-slate-200 dark:border-slate-600 whitespace-nowrap">Practice Quiz</button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- TAB 1: MAXIMA & MINIMA APPLICATIONS -->
+        <section id="maxima-minima" class="tab-content block space-y-8">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-6 md:p-8 text-white shadow-xl">
+                <span class="bg-blue-500/30 text-blue-100 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Application of Derivatives</span>
+                <h2 class="text-2xl md:text-4xl font-extrabold mt-2 mb-3">Maxima & Minima Optimization Problems</h2>
+                <p class="text-blue-100 text-sm md:text-base max-w-3xl">
+                    Optimization involves finding the maximum or minimum value of a function. Derivatives give us the exact rate of change—setting f'(x) = 0 reveals the critical points where extreme values occur.
+                </p>
+            </div>
+
+            <!-- Interactive Optimizer Explorer -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-md border border-slate-200 dark:border-slate-700">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h3 class="text-xl font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line text-blue-600"></i> Interactive 3-Sided Garden Optimizer
+                        </h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Adjust total fence length to maximize the enclosed area against a straight wall.</p>
+                    </div>
+                    <div class="flex items-center space-x-3 bg-slate-100 dark:bg-slate-700 p-2 rounded-lg">
+                        <label for="fenceLength" class="text-xs font-semibold">Total Fence (L):</label>
+                        <input type="range" id="fenceLength" min="20" max="200" value="60" step="10" oninput="updateGardenSim()" class="w-32 accent-blue-600">
+                        <span id="fenceVal" class="text-sm font-bold text-blue-600 dark:text-blue-400 w-12">60m</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                        <canvas id="gardenChart" class="w-full h-64"></canvas>
+                    </div>
+
+                    <div class="space-y-4 text-sm">
+                        <div class="p-4 bg-blue-50 dark:bg-slate-700/50 rounded-xl border border-blue-200 dark:border-slate-600">
+                            <h4 class="font-bold text-blue-900 dark:text-blue-300 mb-2 flex items-center gap-2">
+                                <i class="fa-solid fa-calculator"></i> Mathematical Derivation
+                            </h4>
+                            <div class="space-y-2">
+                                <p><strong>1. Setup Constraint:</strong> 2x + y = <span class="fence-text font-bold text-blue-600">60</span> &rArr; y = <span class="fence-text font-bold text-blue-600">60</span> - 2x</p>
+                                <p><strong>2. Area Function:</strong> A(x) = x &middot; y = x(<span class="fence-text font-bold text-blue-600">60</span> - 2x) = <span class="fence-text font-bold text-blue-600">60</span>x - 2x&sup2;</p>
+                                <p><strong>3. Take Derivative:</strong> A'(x) = <span class="fence-text font-bold text-blue-600">60</span> - 4x</p>
+                                <p><strong>4. Critical Point (A'(x)=0):</strong> 4x = <span class="fence-text font-bold text-blue-600">60</span> &rArr; x = <span id="optX" class="font-bold text-emerald-600">15</span> m</p>
+                                <p><strong>5. Second Derivative Test:</strong> A''(x) = -4 &lt; 0 &rArr; <strong>Confirmed Maximum!</strong></p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-3 text-center">
+                            <div class="bg-slate-100 dark:bg-slate-700 p-3 rounded-lg">
+                                <span class="block text-xs text-slate-500 dark:text-slate-400">Optimal Width (x)</span>
+                                <span id="resWidth" class="text-base font-bold text-blue-600 dark:text-blue-400">15 m</span>
+                            </div>
+                            <div class="bg-slate-100 dark:bg-slate-700 p-3 rounded-lg">
+                                <span class="block text-xs text-slate-500 dark:text-slate-400">Optimal Length (y)</span>
+                                <span id="resLength" class="text-base font-bold text-indigo-600 dark:text-indigo-400">30 m</span>
+                            </div>
+                            <div class="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 p-3 rounded-lg">
+                                <span class="block text-xs text-emerald-600 dark:text-emerald-400 font-medium">Max Area (A)</span>
+                                <span id="resArea" class="text-base font-bold text-emerald-700 dark:text-emerald-300">450 m&sup2;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Core Maxima/Minima Procedure Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center font-bold mb-4">1</div>
+                    <h4 class="font-bold text-base mb-2">Find Critical Points</h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-400">Take the first derivative f'(x), set it to 0, and solve for x. These identify flat stationary points where the graph turns.</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <div class="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-lg flex items-center justify-center font-bold mb-4">2</div>
+                    <h4 class="font-bold text-base mb-2">1st Derivative Test</h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-400">Check the sign of f'(x) on either side of critical point c:</p>
+                    <ul class="text-xs list-disc list-inside mt-2 text-slate-500 space-y-1">
+                        <li>(+) to (-) : <strong>Local Maximum</strong></li>
+                        <li>(-) to (+) : <strong>Local Minimum</strong></li>
+                    </ul>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400 rounded-lg flex items-center justify-center font-bold mb-4">3</div>
+                    <h4 class="font-bold text-base mb-2">2nd Derivative Test</h4>
+                    <p class="text-xs text-slate-600 dark:text-slate-400">Evaluate f''(c) at critical point c:</p>
+                    <ul class="text-xs list-disc list-inside mt-2 text-slate-500 space-y-1">
+                        <li>f''(c) &lt; 0 : Concave down &rArr; <strong>Maximum</strong></li>
+                        <li>f''(c) &gt; 0 : Concave up &rArr; <strong>Minimum</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: RULES OF DERIVATIVES -->
+        <section id="derivative-rules" class="tab-content hidden space-y-8">
+            <div class="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-2xl p-6 md:p-8 text-white shadow-xl">
+                <span class="bg-emerald-500/30 text-emerald-100 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Fundamental Rules</span>
+                <h2 class="text-2xl md:text-4xl font-extrabold mt-2 mb-3">Rules for Finding Derivatives</h2>
+                <p class="text-emerald-100 text-sm md:text-base max-w-3xl">
+                    Master the foundational rules of differentiation: Power Rule, Product Rule, Quotient Rule, and the Chain Rule for composite functions.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Power Rule -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-bold text-lg text-emerald-600 dark:text-emerald-400">Power Rule</h3>
+                        <span class="text-xs bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 font-semibold px-2.5 py-1 rounded">Basic</span>
+                    </div>
+                    <div class="math-box p-3 rounded-lg mb-3 font-mono font-bold text-center">
+                        d/dx [ x<sup>n</sup> ] = n &middot; x<sup>n-1</sup>
+                    </div>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 mb-2">Bring the exponent to the front and decrease the power by 1.</p>
+                    <div class="text-xs bg-slate-100 dark:bg-slate-700/50 p-2.5 rounded text-slate-700 dark:text-slate-300">
+                        <strong>Example:</strong> d/dx [ 5x&sup4; ] = 5 &middot; (4x&sup3;) = 20x&sup3;
+                    </div>
+                </div>
+
+                <!-- Product Rule -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-bold text-lg text-blue-600 dark:text-blue-400">Product Rule</h3>
+                        <span class="text-xs bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 font-semibold px-2.5 py-1 rounded">Combination</span>
+                    </div>
+                    <div class="math-box p-3 rounded-lg mb-3 font-mono font-bold text-center">
+                        d/dx [ u &middot; v ] = u &middot; v' + v &middot; u'
+                    </div>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 mb-2">"First times derivative of second plus second times derivative of first."</p>
+                    <div class="text-xs bg-slate-100 dark:bg-slate-700/50 p-2.5 rounded text-slate-700 dark:text-slate-300">
+                        <strong>Example:</strong> d/dx [ x&sup2; &middot; e<sup>x</sup> ] = x&sup2;e<sup>x</sup> + e<sup>x</sup>(2x) = xe<sup>x</sup>(x + 2)
+                    </div>
+                </div>
+
+                <!-- Quotient Rule -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-bold text-lg text-indigo-600 dark:text-indigo-400">Quotient Rule</h3>
+                        <span class="text-xs bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 font-semibold px-2.5 py-1 rounded">Fractions</span>
+                    </div>
+                    <div class="math-box p-3 rounded-lg mb-3 font-mono font-bold text-center text-sm">
+                        d/dx [ u / v ] = (v &middot; u' - u &middot; v') / v&sup2;
+                    </div>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 mb-2">"Low d-high minus high d-low, over the square of what's below."</p>
+                    <div class="text-xs bg-slate-100 dark:bg-slate-700/50 p-2.5 rounded text-slate-700 dark:text-slate-300">
+                        <strong>Example:</strong> d/dx [ x / (x+1) ] = [ (x+1)(1) - x(1) ] / (x+1)&sup2; = 1 / (x+1)&sup2;
+                    </div>
+                </div>
+
+                <!-- Chain Rule -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-bold text-lg text-purple-600 dark:text-purple-400">Chain Rule</h3>
+                        <span class="text-xs bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 font-semibold px-2.5 py-1 rounded">Composite</span>
+                    </div>
+                    <div class="math-box p-3 rounded-lg mb-3 font-mono font-bold text-center">
+                        d/dx [ f(g(x)) ] = f'(g(x)) &middot; g'(x)
+                    </div>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 mb-2">Derivative of outside function evaluated inside, multiplied by derivative of inside.</p>
+                    <div class="text-xs bg-slate-100 dark:bg-slate-700/50 p-2.5 rounded text-slate-700 dark:text-slate-300">
+                        <strong>Example:</strong> d/dx [ (3x+1)&sup5; ] = 5(3x+1)&sup4; &middot; (3) = 15(3x+1)&sup4;
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: TRIGONOMETRIC FUNCTIONS -->
+        <section id="trig-derivatives" class="tab-content hidden space-y-8">
+            <div class="bg-gradient-to-r from-purple-600 to-pink-700 rounded-2xl p-6 md:p-8 text-white shadow-xl">
+                <span class="bg-purple-500/30 text-purple-100 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Trigonometric Differentiation</span>
+                <h2 class="text-2xl md:text-4xl font-extrabold mt-2 mb-3">Trigonometric Rules & Visualizer</h2>
+                <p class="text-purple-100 text-sm md:text-base max-w-3xl">
+                    Explore derivatives of sine, cosine, tangent, and their reciprocals alongside interactive wave visualizations.
+                </p>
+            </div>
+
+            <!-- Trig Visualizer -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-md border border-slate-200 dark:border-slate-700">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h3 class="text-xl font-bold flex items-center gap-2">
+                            <i class="fa-solid fa-wave-square text-purple-600"></i> Function vs Derivative Grapher
+                        </h3>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Observe how the tangent slope of f(x) perfectly traces f'(x).</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <select id="trigSelect" onchange="renderTrigChart()" class="bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-100 text-sm font-semibold p-2 rounded-lg border-0 focus:ring-2 focus:ring-purple-500">
+                            <option value="sin">f(x) = sin(x) &rarr; f'(x) = cos(x)</option>
+                            <option value="cos">f(x) = cos(x) &rarr; f'(x) = -sin(x)</option>
+                            <option value="tan">f(x) = tan(x) &rarr; f'(x) = sec&sup2;(x)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <canvas id="trigChart" class="w-full h-64"></canvas>
+                </div>
+            </div>
+
+            <!-- Trig Table Cheat Sheet -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm text-center">
+                    <h4 class="font-bold text-slate-700 dark:text-slate-300">Sine</h4>
+                    <div class="math-box p-2 my-2 rounded font-mono text-sm">d/dx [ sin(x) ] = cos(x)</div>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm text-center">
+                    <h4 class="font-bold text-slate-700 dark:text-slate-300">Cosine</h4>
+                    <div class="math-box p-2 my-2 rounded font-mono text-sm">d/dx [ cos(x) ] = -sin(x)</div>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm text-center">
+                    <h4 class="font-bold text-slate-700 dark:text-slate-300">Tangent</h4>
+                    <div class="math-box p-2 my-2 rounded font-mono text-sm">d/dx [ tan(x) ] = sec&sup2;(x)</div>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm text-center">
+                    <h4 class="font-bold text-slate-700 dark:text-slate-300">Cosecant</h4>
+                    <div class="math-box p-2 my-2 rounded font-mono text-sm">d/dx [ csc(x) ] = -csc(x)cot(x)</div>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm text-center">
+                    <h4 class="font-bold text-slate-700 dark:text-slate-300">Secant</h4>
+                    <div class="math-box p-2 my-2 rounded font-mono text-sm">d/dx [ sec(x) ] = sec(x)tan(x)</div>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm text-center">
+                    <h4 class="font-bold text-slate-700 dark:text-slate-300">Cotangent</h4>
+                    <div class="math-box p-2 my-2 rounded font-mono text-sm">d/dx [ cot(x) ] = -csc&sup2;(x)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: HIGHER ORDER & IMPLICIT -->
+        <section id="higher-implicit" class="tab-content hidden space-y-8">
+            <div class="bg-gradient-to-r from-amber-600 to-orange-700 rounded-2xl p-6 md:p-8 text-white shadow-xl">
+                <span class="bg-amber-500/30 text-amber-100 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Advanced Derivatives</span>
+                <h2 class="text-2xl md:text-4xl font-extrabold mt-2 mb-3">Higher-Order & Implicit Differentiation</h2>
+                <p class="text-amber-100 text-sm md:text-base max-w-3xl">
+                    Learn to compute second, third, and n-th derivatives, as well as finding dy/dx for equations where y cannot be explicitly isolated.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Higher Order Derivatives Card -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-md space-y-4">
+                    <h3 class="text-xl font-bold text-amber-600 dark:text-amber-400 flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group"></i> Higher-Order Derivatives
+                    </h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-400">
+                        Taking the derivative of a derivative yields higher-order functions. For motion: Position s(t) &rarr; Velocity v(t) = s'(t) &rarr; Acceleration a(t) = s''(t).
+                    </p>
+                    
+                    <div class="space-y-2 text-xs">
+                        <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                            <span class="font-bold text-slate-700 dark:text-slate-300">1st Derivative:</span> f'(x) = dy/dx
+                        </div>
+                        <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                            <span class="font-bold text-slate-700 dark:text-slate-300">2nd Derivative:</span> f''(x) = d&sup2;y/dx&sup2;
+                        </div>
+                        <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                            <span class="font-bold text-slate-700 dark:text-slate-300">3rd Derivative:</span> f'''(x) = d&sup3;y/dx&sup3;
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-amber-50 dark:bg-slate-700/40 rounded-xl border border-amber-200 dark:border-amber-800/40 text-xs space-y-2">
+                        <strong class="text-amber-800 dark:text-amber-300">Worked Example:</strong>
+                        <p>Find f''(x) for f(x) = x&sup4; - 3x&sup2; + 5</p>
+                        <p>1. f'(x) = 4x&sup3; - 6x</p>
+                        <p>2. f''(x) = 12x&sup2; - 6</p>
+                    </div>
+                </div>
+
+                <!-- Implicit Differentiation Card -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-md space-y-4">
+                    <h3 class="text-xl font-bold text-orange-600 dark:text-orange-400 flex items-center gap-2">
+                        <i class="fa-solid fa-code-branch"></i> Implicit Differentiation
+                    </h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-400">
+                        When x and y are intermingled (e.g., x&sup2; + y&sup2; = 25), differentiate both sides with respect to x, applying the Chain Rule to y terms (multiply by dy/dx).
+                    </p>
+
+                    <div class="p-4 bg-orange-50 dark:bg-slate-700/40 rounded-xl border border-orange-200 dark:border-orange-800/40 text-xs space-y-2">
+                        <strong class="text-orange-800 dark:text-orange-300">Worked Circle Example:</strong>
+                        <p>Find dy/dx for x&sup2; + y&sup2; = 25</p>
+                        <p>1. Differentiate w.r.t x: 2x + 2y(dy/dx) = 0</p>
+                        <p>2. Solve for dy/dx: 2y(dy/dx) = -2x</p>
+                        <p>3. dy/dx = -2x / 2y = <strong>-x / y</strong></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: PRACTICE QUIZ -->
+        <section id="practice-quiz" class="tab-content hidden space-y-8">
+            <div class="bg-gradient-to-r from-rose-600 to-pink-700 rounded-2xl p-6 md:p-8 text-white shadow-xl">
+                <span class="bg-rose-500/30 text-rose-100 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Interactive Assessment</span>
+                <h2 class="text-2xl md:text-4xl font-extrabold mt-2 mb-3">Practice Quiz & Solver</h2>
+                <p class="text-rose-100 text-sm md:text-base max-w-3xl">
+                    Test your understanding of optimization, trigonometric rules, higher derivatives, and implicit differentiation.
+                </p>
+            </div>
+
+            <div class="max-w-3xl mx-auto bg-white dark:bg-slate-800 rounded-2xl p-6 md:p-8 shadow-md border border-slate-200 dark:border-slate-700 space-y-6">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-700">
+                    <span id="quizProgress" class="text-xs font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400">Question 1 of 5</span>
+                    <span id="quizScore" class="text-xs font-semibold bg-slate-100 dark:bg-slate-700 px-3 py-1 rounded-full">Score: 0 / 5</span>
+                </div>
+
+                <div id="questionContainer" class="space-y-4">
+                    <!-- Dynamic Question Content Inserted via JS -->
+                </div>
+
+                <div id="explanationContainer" class="hidden p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl border border-slate-200 dark:border-slate-600 text-xs space-y-2">
+                    <!-- Dynamic Answer Explanation -->
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-4 border-t border-slate-200 dark:border-slate-700">
+                    <button id="nextBtn" onclick="nextQuestion()" class="hidden bg-rose-600 hover:bg-rose-700 text-white font-semibold text-sm px-5 py-2.5 rounded-lg transition">Next Question <i class="fa-solid fa-arrow-right ml-1"></i></button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 py-6 mt-12 text-center text-xs text-slate-500 dark:text-slate-400">
+        <p>© 2026 CalculusHub • Educational Platform for Maxima, Minima & Rules of Derivatives</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Dark mode handler
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // Navigation Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(tabId).classList.remove('hidden');
+
+            if (tabId === 'maxima-minima') updateGardenSim();
+            if (tabId === 'trig-derivatives') renderTrigChart();
+        }
+
+        // ==========================================
+        // TAB 1: 3-SIDED GARDEN OPTIMIZER (CHART.JS)
+        // ==========================================
+        let gardenChartInstance = null;
+
+        function updateGardenSim() {
+            const length = parseInt(document.getElementById('fenceLength').value);
+            document.getElementById('fenceVal').innerText = length + 'm';
+            document.querySelectorAll('.fence-text').forEach(el => el.innerText = length);
+
+            const optX = length / 4;
+            const optY = length / 2;
+            const maxArea = optX * optY;
+
+            document.getElementById('optX').innerText = optX;
+            document.getElementById('resWidth').innerText = optX + ' m';
+            document.getElementById('resLength').innerText = optY + ' m';
+            document.getElementById('resArea').innerText = maxArea + ' m²';
+
+            const labels = [];
+            const areaData = [];
+            for (let x = 0; x <= length / 2; x += Math.max(1, Math.floor(length / 20))) {
+                labels.push(x);
+                areaData.push(x * (length - 2 * x));
+            }
+
+            const ctx = document.getElementById('gardenChart').getContext('2d');
+            if (gardenChartInstance) gardenChartInstance.destroy();
+
+            gardenChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Area A(x) = ' + length + 'x - 2x²',
+                        data: areaData,
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: { display: true, text: 'Enclosed Area A(x) vs Width x' }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Width x (meters)' } },
+                        y: { title: { display: true, text: 'Area A (m²)' } }
+                    }
+                }
+            });
+        }
+
+        // ==========================================
+        // TAB 3: TRIGONOMETRIC VISUALIZER
+        // ==========================================
+        let trigChartInstance = null;
+
+        function renderTrigChart() {
+            const type = document.getElementById('trigSelect').value;
+            const labels = [];
+            const funcData = [];
+            const derivData = [];
+
+            for (let x = -Math.PI * 2; x <= Math.PI * 2; x += 0.2) {
+                labels.push(x.toFixed(1));
+                if (type === 'sin') {
+                    funcData.push(Math.sin(x));
+                    derivData.push(Math.cos(x));
+                } else if (type === 'cos') {
+                    funcData.push(Math.cos(x));
+                    derivData.push(-Math.sin(x));
+                } else if (type === 'tan') {
+                    const tanVal = Math.tan(x);
+                    const sec2Val = 1 / Math.pow(Math.cos(x), 2);
+                    funcData.push(Math.abs(tanVal) > 5 ? null : tanVal);
+                    derivData.push(sec2Val > 10 ? null : sec2Val);
+                }
+            }
+
+            const ctx = document.getElementById('trigChart').getContext('2d');
+            if (trigChartInstance) trigChartInstance.destroy();
+
+            trigChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Function f(x)',
+                            data: funcData,
+                            borderColor: '#9333ea',
+                            borderWidth: 2,
+                            tension: 0.3
+                        },
+                        {
+                            label: "Derivative f'(x)",
+                            data: derivData,
+                            borderColor: '#ec4899',
+                            borderDash: [5, 5],
+                            borderWidth: 2,
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { title: { display: true, text: 'x (radians)' } },
+                        y: { title: { display: true, text: 'y' }, min: -3, max: 3 }
+                    }
+                }
+            });
+        }
+
+        // ==========================================
+        // TAB 5: PRACTICE QUIZ ENGINE
+        // ==========================================
+        const quizQuestions = [
+            {
+                question: "What is the derivative of f(x) = sin(x) &middot; e<sup>x</sup> using the Product Rule?",
+                options: [
+                    "cos(x) &middot; e<sup>x</sup>",
+                    "e<sup>x</sup>(sin(x) + cos(x))",
+                    "sin(x) + cos(x)",
+                    "-e<sup>x</sup>cos(x)"
+                ],
+                correct: 1,
+                explanation: "Using Product Rule (u &middot; v)' = u'v + uv': d/dx [ sin(x) &middot; e<sup>x</sup> ] = cos(x)e<sup>x</sup> + sin(x)e<sup>x</sup> = e<sup>x</sup>(sin(x) + cos(x))."
+            },
+            {
+                question: "Find dy/dx using implicit differentiation for x&sup2; + y&sup2; = 100.",
+                options: [
+                    "-x / y",
+                    "x / y",
+                    "-2x",
+                    "1 / 2y"
+                ],
+                correct: 0,
+                explanation: "Differentiate both sides w.r.t x: 2x + 2y(dy/dx) = 0 &rArr; 2y(dy/dx) = -2x &rArr; dy/dx = -x / y."
+            },
+            {
+                question: "Find the 2nd derivative f''(x) for f(x) = x&sup5; - 2x&sup3;.",
+                options: [
+                    "5x&sup4; - 6x&sup2;",
+                    "20x&sup3; - 12x",
+                    "60x&sup2; - 12",
+                    "120x"
+                ],
+                correct: 1,
+                explanation: "1st Derivative: f'(x) = 5x&sup4; - 6x&sup2;. 2nd Derivative: f''(x) = 20x&sup3; - 12x."
+            },
+            {
+                question: "If f''(c) &lt; 0 at a critical point where f'(c) = 0, what does the Second Derivative Test confirm?",
+                options: [
+                    "A Local Minimum",
+                    "A Local Maximum",
+                    "An Inflection Point",
+                    "An Asymptote"
+                ],
+                correct: 1,
+                explanation: "When f''(c) &lt; 0, the graph is concave down (hill-shaped), confirming a Local Maximum."
+            },
+            {
+                question: "What is the derivative of f(x) = (2x + 3)&sup4; using the Chain Rule?",
+                options: [
+                    "4(2x + 3)&sup3;",
+                    "8(2x + 3)&sup3;",
+                    "2(2x + 3)&sup4;",
+                    "12(2x + 3)&sup3;"
+                ],
+                correct: 1,
+                explanation: "Outside derivative: 4(2x+3)&sup3;, Inside derivative: 2. Total: 4(2x+3)&sup3; &middot; 2 = 8(2x+3)&sup3;."
+            }
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const q = quizQuestions[currentQ];
+            document.getElementById('quizProgress').innerText = `Question ${currentQ + 1} of ${quizQuestions.length}`;
+            document.getElementById('quizScore').innerText = `Score: ${score} / ${quizQuestions.length}`;
+            document.getElementById('explanationContainer').classList.add('hidden');
+            document.getElementById('nextBtn').classList.add('hidden');
+
+            let optionsHtml = '';
+            q.options.forEach((opt, idx) => {
+                optionsHtml += `
+                    <button onclick="checkAnswer(${idx})" class="opt-btn w-full text-left p-3.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-rose-50 dark:hover:bg-slate-700/60 transition text-sm flex items-center justify-between">
+                        <span>${opt}</span>
+                        <i class="fa-regular fa-circle text-slate-400"></i>
+                    </button>
+                `;
+            });
+
+            document.getElementById('questionContainer').innerHTML = `
+                <h3 class="text-base font-bold text-slate-800 dark:text-slate-100 mb-4">${q.question}</h3>
+                <div class="space-y-3">${optionsHtml}</div>
+            `;
+        }
+
+        function checkAnswer(selectedIdx) {
+            const q = quizQuestions[currentQ];
+            const buttons = document.querySelectorAll('.opt-btn');
+
+            buttons.forEach((btn, idx) => {
+                btn.disabled = true;
+                if (idx === q.correct) {
+                    btn.classList.add('bg-emerald-100', 'dark:bg-emerald-900/40', 'border-emerald-500', 'text-emerald-800', 'dark:text-emerald-300');
+                } else if (idx === selectedIdx) {
+                    btn.classList.add('bg-rose-100', 'dark:bg-rose-900/40', 'border-rose-500', 'text-rose-800', 'dark:text-rose-300');
+                }
+            });
+
+            if (selectedIdx === q.correct) {
+                score++;
+            }
+
+            document.getElementById('quizScore').innerText = `Score: ${score} / ${quizQuestions.length}`;
+            
+            const expl = document.getElementById('explanationContainer');
+            expl.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
+            expl.classList.remove('hidden');
+
+            document.getElementById('nextBtn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQ++;
+            if (currentQ < quizQuestions.length) {
+                loadQuestion();
+            } else {
+                document.getElementById('questionContainer').innerHTML = `
+                    <div class="text-center py-8 space-y-4">
+                        <i class="fa-solid fa-trophy text-5xl text-amber-500"></i>
+                        <h3 class="text-2xl font-bold">Quiz Completed!</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400">Your final score is <span class="font-bold text-rose-600">${score} / ${quizQuestions.length}</span>.</p>
+                        <button onclick="restartQuiz()" class="bg-rose-600 text-white text-sm font-semibold px-6 py-2.5 rounded-lg hover:bg-rose-700 transition">Try Again</button>
+                    </div>
+                `;
+                document.getElementById('explanationContainer').classList.add('hidden');
+                document.getElementById('nextBtn').classList.add('hidden');
+            }
+        }
+
+        function restartQuiz() {
+            currentQ = 0;
+            score = 0;
+            loadQuestion();
+        }
+
+        // Initialize default view on load
+        window.addEventListener('DOMContentLoaded', () => {
+            updateGardenSim();
+            loadQuestion();
+        });
+    </script>
+</body>
+</html>
